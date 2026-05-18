@@ -1,4 +1,3 @@
-```python
 import streamlit as st
 
 st.set_page_config(
@@ -290,4 +289,3 @@ if st.button("🔍 진로 추천 받기"):
         """)
 
     st.success("✨ 미래는 아직 무한 가능성! 재미있게 참고해봐 😄")
-```
