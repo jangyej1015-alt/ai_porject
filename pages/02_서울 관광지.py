@@ -2,105 +2,204 @@ import streamlit as st
 import folium
 from streamlit_folium import st_folium
 
+# -----------------------------
+# 페이지 설정
+# -----------------------------
 st.set_page_config(
     page_title="서울 관광지 TOP10",
     layout="wide"
 )
 
 st.title("🇰🇷 외국인들이 좋아하는 서울 주요 관광지 TOP10")
-st.markdown("폴리움(Folium) 지도로 서울의 인기 관광지를 확인하세요.")
+st.markdown("서울 인기 관광지를 지도에서 확인하고 주변 정보를 살펴보세요.")
 
-# 서울 중심 좌표
-seoul_center = [37.5665, 126.9780]
-
-# 지도 생성
-m = folium.Map(
-    location=seoul_center,
-    zoom_start=11,
-    tiles="CartoDB positron"
-)
-
+# -----------------------------
 # 관광지 데이터
+# -----------------------------
 tourist_spots = [
     {
         "name": "경복궁",
         "lat": 37.5796,
         "lon": 126.9770,
-        "desc": "조선 시대의 대표 궁궐"
+        "desc": "조선 시대의 대표 궁궐",
+        "station": "경복궁역 (3호선)",
+        "detail": """
+경복궁역에서 도보 약 5분 거리로 접근성이 매우 좋습니다.
+한복 체험과 궁궐 야간개장이 특히 외국인 관광객에게 인기가 많습니다.
+주변에는 서촌 카페거리와 전통 맛집들이 많아 함께 둘러보기 좋습니다.
+"""
     },
     {
         "name": "북촌한옥마을",
         "lat": 37.5826,
         "lon": 126.9830,
-        "desc": "전통 한옥 거리"
+        "desc": "전통 한옥 거리",
+        "station": "안국역 (3호선)",
+        "detail": """
+안국역 2번 출구에서 도보 약 10분 정도 소요됩니다.
+전통 한옥 골목길에서 사진 촬영과 공예 체험을 즐길 수 있습니다.
+근처 인사동과 삼청동 카페거리까지 함께 관광하기 좋습니다.
+"""
     },
     {
         "name": "명동",
         "lat": 37.5637,
         "lon": 126.9827,
-        "desc": "쇼핑과 K-뷰티 중심지"
+        "desc": "쇼핑과 K-뷰티 중심지",
+        "station": "명동역 (4호선)",
+        "detail": """
+명동역과 바로 연결되어 있어 이동이 매우 편리합니다.
+K-뷰티 쇼핑, 길거리 음식, 환전소 등이 밀집되어 있습니다.
+밤에는 네온사인과 다양한 먹거리로 활기찬 분위기를 즐길 수 있습니다.
+"""
     },
     {
         "name": "남산서울타워",
         "lat": 37.5512,
         "lon": 126.9882,
-        "desc": "서울 야경 명소"
+        "desc": "서울 야경 명소",
+        "station": "명동역 (4호선)",
+        "detail": """
+명동역에서 케이블카 또는 도보 등산로를 이용할 수 있습니다.
+서울 전경을 한눈에 볼 수 있어 야경 명소로 매우 유명합니다.
+사랑의 자물쇠 포토존과 전망대 카페가 인기입니다.
+"""
     },
     {
         "name": "홍대거리",
         "lat": 37.5563,
         "lon": 126.9220,
-        "desc": "젊음과 예술의 거리"
+        "desc": "젊음과 예술의 거리",
+        "station": "홍대입구역 (2호선)",
+        "detail": """
+홍대입구역과 가까워 접근성이 뛰어납니다.
+버스킹 공연, 감성 카페, 다양한 클럽 문화를 체험할 수 있습니다.
+젊은 분위기의 쇼핑거리와 맛집 탐방이 특히 인기입니다.
+"""
     },
     {
         "name": "인사동",
         "lat": 37.5740,
         "lon": 126.9865,
-        "desc": "전통 문화와 기념품 거리"
+        "desc": "전통 문화와 기념품 거리",
+        "station": "안국역 (3호선)",
+        "detail": """
+안국역에서 도보 이동이 가능합니다.
+전통 찻집, 한지 공예품, 한국 기념품 쇼핑으로 유명합니다.
+주말에는 거리 공연과 전통문화 행사가 자주 열립니다.
+"""
     },
     {
         "name": "동대문디자인플라자(DDP)",
         "lat": 37.5665,
         "lon": 127.0092,
-        "desc": "현대 건축 랜드마크"
+        "desc": "현대 건축 랜드마크",
+        "station": "동대문역사문화공원역",
+        "detail": """
+지하철역과 바로 연결되어 있어 매우 편리합니다.
+야간 LED 장미정원과 미래형 건축 디자인이 유명합니다.
+패션 쇼핑몰과 야시장까지 함께 즐길 수 있습니다.
+"""
     },
     {
         "name": "롯데월드타워",
         "lat": 37.5131,
         "lon": 127.1025,
-        "desc": "서울 초고층 랜드마크"
+        "desc": "서울 초고층 랜드마크",
+        "station": "잠실역 (2호선)",
+        "detail": """
+잠실역과 연결되어 있어 이동이 편리합니다.
+서울스카이 전망대에서 서울 전체를 감상할 수 있습니다.
+롯데월드몰, 아쿠아리움, 쇼핑까지 한 번에 즐길 수 있습니다.
+"""
     },
     {
         "name": "한강공원",
         "lat": 37.5207,
         "lon": 126.9395,
-        "desc": "서울 시민 휴식 공간"
+        "desc": "서울 시민 휴식 공간",
+        "station": "여의나루역 (5호선)",
+        "detail": """
+여의나루역에서 도보 이동이 가능합니다.
+자전거 대여와 치킨 배달 문화가 외국인들에게 인기가 많습니다.
+밤에는 한강 야경과 음악분수 공연을 즐길 수 있습니다.
+"""
     },
     {
         "name": "광장시장",
         "lat": 37.5704,
         "lon": 126.9997,
-        "desc": "한국 전통 먹거리 시장"
+        "desc": "한국 전통 먹거리 시장",
+        "station": "종로5가역 (1호선)",
+        "detail": """
+종로5가역에서 도보 약 3분 거리입니다.
+빈대떡, 마약김밥, 육회 등 다양한 길거리 음식을 맛볼 수 있습니다.
+넷플릭스 먹거리 콘텐츠 이후 외국인 관광객 방문이 크게 증가했습니다.
+"""
     }
 ]
 
-# 마커 추가
+# -----------------------------
+# 지도 생성
+# -----------------------------
+seoul_center = [37.5665, 126.9780]
+
+m = folium.Map(
+    location=seoul_center,
+    zoom_start=11,
+    tiles="CartoDB Voyager"  # 컬러 지도 스타일
+)
+
+# -----------------------------
+# 파란색 마커 추가
+# -----------------------------
 for idx, spot in enumerate(tourist_spots, start=1):
+
+    popup_text = f"""
+    <b>{idx}. {spot['name']}</b><br>
+    {spot['desc']}
+    """
+
     folium.Marker(
         location=[spot["lat"], spot["lon"]],
-        popup=f"""
-        <b>{idx}. {spot['name']}</b><br>
-        {spot['desc']}
-        """,
+        popup=popup_text,
         tooltip=spot["name"],
-        icon=folium.Icon(color="red", icon="info-sign")
+        icon=folium.Icon(
+            color="blue",
+            icon="info-sign"
+        )
     ).add_to(m)
 
-# 지도 출력
-st_folium(m, width=1200, height=700)
+# -----------------------------
+# 지도 크기 조절 (80%)
+# -----------------------------
+col1, col2, col3 = st.columns([1, 8, 1])
 
-# 관광지 리스트
-st.subheader("📍 관광지 목록")
+with col2:
+    st_folium(
+        m,
+        width=1000,
+        height=600
+    )
 
-for idx, spot in enumerate(tourist_spots, start=1):
-    st.write(f"{idx}. {spot['name']} - {spot['desc']}")
+# -----------------------------
+# 관광지 선택
+# -----------------------------
+st.subheader("📍 관광지 상세 정보")
+
+selected_spot = st.selectbox(
+    "관광지를 선택하세요",
+    [spot["name"] for spot in tourist_spots]
+)
+
+# 선택된 관광지 찾기
+spot_info = next(
+    spot for spot in tourist_spots
+    if spot["name"] == selected_spot
+)
+
+# 상세 정보 출력
+st.markdown(f"## {spot_info['name']}")
+st.markdown(f"🚇 **가까운 지하철역:** {spot_info['station']}")
+st.markdown(f"📝 **설명:**")
+st.write(spot_info["detail"])
